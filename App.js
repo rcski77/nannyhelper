@@ -1,20 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
+
+import Profile from "./screens/Profile";
+import Schedule from "./screens/Schedule";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Profile"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#58c6f5",
+          },
+          headerTintColor: "#000",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          tabBarActiveBackgroundColor: "#58c6f5",
+          tabBarActiveTintColor: "#fff",
+        }}
+      >
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color }) => (
+              <Feather name="user" size={24} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Schedule"
+          component={Schedule}
+          options={{
+            tabBarLabel: "Schedule",
+            tabBarIcon: ({ color }) => (
+              <Feather name="calendar" size={24} color={color} />
+            ),
+          }}
+        />
+      </Tab.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
