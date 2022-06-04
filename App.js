@@ -17,15 +17,16 @@ export default function App() {
         initialRouteName="Profile"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#58c6f5",
+            backgroundColor: "#3c4754",
           },
-          headerTintColor: "#000",
+          headerTintColor: "#fff",
           headerTitleAlign: "center",
           headerTitleStyle: {
             fontWeight: "bold",
           },
-          tabBarActiveBackgroundColor: "#58c6f5",
+          tabBarActiveBackgroundColor: "#3c4754",
           tabBarActiveTintColor: "#fff",
+          tabBarLabelStyle: {fontSize: 14}
         }}
       >
         <Tab.Screen
