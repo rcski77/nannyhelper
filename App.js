@@ -6,8 +6,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 import Profile from "./screens/Profile";
+<<<<<<< HEAD
 import Schedule from "./screens/Schedule";
 import ProfileSettings from "./screens/ProfileSettings";
+=======
+import ScheduleStackScreen from "./screens/Schedule";
+>>>>>>> dev
 
 const Tab = createBottomTabNavigator();
 
@@ -25,6 +29,7 @@ export default function App() {
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerShown: false,
           tabBarActiveBackgroundColor: "#3c4754",
           tabBarActiveTintColor: "#fff",
           tabBarLabelStyle: { fontSize: 14 },
@@ -52,8 +57,8 @@ export default function App() {
           }}
         />
         <Tab.Screen
-          name="Schedule"
-          component={Schedule}
+          name="ScheduleStackScreen"
+          component={ScheduleStackScreen}
           options={{
             tabBarLabel: "Schedule",
             tabBarIcon: ({ color }) => <Feather name="calendar" size={24} color={color} />,
