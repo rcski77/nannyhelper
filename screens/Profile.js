@@ -20,9 +20,9 @@ const Profile = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    }
+  container: {
+    flex: 1,
+  },
 });
 
 export default Profile;

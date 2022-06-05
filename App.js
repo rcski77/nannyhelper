@@ -7,6 +7,7 @@ import { Feather } from "@expo/vector-icons";
 
 import Profile from "./screens/Profile";
 import Schedule from "./screens/Schedule";
+import ProfileSettings from "./screens/ProfileSettings";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,7 +27,7 @@ export default function App() {
           },
           tabBarActiveBackgroundColor: "#3c4754",
           tabBarActiveTintColor: "#fff",
-          tabBarLabelStyle: {fontSize: 14}
+          tabBarLabelStyle: { fontSize: 14 },
         }}
       >
         <Tab.Screen
@@ -34,9 +35,20 @@ export default function App() {
           component={Profile}
           options={{
             tabBarLabel: "Profile",
-            tabBarIcon: ({ color }) => (
-              <Feather name="user" size={24} color={color} />
-            ),
+            tabBarIcon: ({ color }) => <Feather name="user" size={24} color={color} />,
+          }}
+        />
+        <Tab.Screen
+          name="Profile Settings"
+          component={ProfileSettings}
+          listeners={({ navigation, route }) => {
+            onTabPress: () => {
+              navigation.navigate("Settings");
+            };
+          }}
+          options={{
+            tabBarLabel: "Settings",
+            tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
           }}
         />
         <Tab.Screen
@@ -44,9 +56,7 @@ export default function App() {
           component={Schedule}
           options={{
             tabBarLabel: "Schedule",
-            tabBarIcon: ({ color }) => (
-              <Feather name="calendar" size={24} color={color} />
-            ),
+            tabBarIcon: ({ color }) => <Feather name="calendar" size={24} color={color} />,
           }}
         />
       </Tab.Navigator>
