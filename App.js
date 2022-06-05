@@ -6,12 +6,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 import Profile from "./screens/Profile";
-<<<<<<< HEAD
 import Schedule from "./screens/Schedule";
 import ProfileSettings from "./screens/ProfileSettings";
-=======
 import ScheduleStackScreen from "./screens/Schedule";
->>>>>>> dev
 
 const Tab = createBottomTabNavigator();
 
