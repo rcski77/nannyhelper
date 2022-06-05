@@ -9,6 +9,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+fb_creds
 
 # macOS
 .DS_Store
