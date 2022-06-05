@@ -5,10 +5,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
-import Profile from "./screens/Profile";
 import Schedule from "./screens/Schedule";
-import ProfileSettings from "./screens/ProfileSettings";
 import ScheduleStackScreen from "./screens/Schedule";
+import ProfileStackScreen from "./screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,26 +32,14 @@ export default function App() {
         }}
       >
         <Tab.Screen
-          name="Profile"
-          component={Profile}
+          name="ProfileStackScreen"
+          component={ProfileStackScreen}
           options={{
             tabBarLabel: "Profile",
             tabBarIcon: ({ color }) => <Feather name="user" size={24} color={color} />,
           }}
         />
-        <Tab.Screen
-          name="Profile Settings"
-          component={ProfileSettings}
-          listeners={({ navigation, route }) => {
-            onTabPress: () => {
-              navigation.navigate("Settings");
-            };
-          }}
-          options={{
-            tabBarLabel: "Settings",
-            tabBarIcon: ({ color }) => <Feather name="settings" size={24} color={color} />,
-          }}
-        />
+
         <Tab.Screen
           name="ScheduleStackScreen"
           component={ScheduleStackScreen}

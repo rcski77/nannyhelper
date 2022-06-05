@@ -1,13 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {
-  getDatabase,
-  onValue,
-  ref,
-  set,
-  push,
-  remove,
-} from "firebase/database";
+import { getDatabase, onValue, ref, set, push, remove } from "firebase/database";
 import { getAnalytics } from "firebase/analytics";
 import { firebaseConfig } from "./fb_creds";
 
@@ -17,7 +10,7 @@ export function initDB() {
 
 export function storeScheduleSlot(item) {
   const db = getDatabase();
-  
+
   push(reference, item);
 }
 
