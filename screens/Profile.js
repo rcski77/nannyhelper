@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native-gesture-handler";
@@ -45,13 +46,75 @@ const ProfileStackScreen = ({ route, navigation }) => {
 };
 
 const Profile = ({ route, navigation }) => {
+  // State Hook for User Profiles
+  const [profileState, setProfileState] = useState({
+    userID: "",
+    userGroup: "",
+    name: "",
+    address: "",
+    phone: "",
+    email: "",
+    password: "",
+    emergencyPlan: "",
+    paymentInfo: "",
+    hours: "",
+  });
+
+  // Helper Function for State Hook Updates
+  const updateProfileState = (vals) => {
+    setProfileState({
+      ...profileState,
+      ...vals,
+    });
+  };
+
+  // Updates profile information upon change
+  useEffect(() => {
+    if (
+      route.params?.userID ||
+      route.params?.userGroup ||
+      route.params?.name ||
+      route.params?.address ||
+      route.params?.phone ||
+      route.params?.email ||
+      route.params?.password ||
+      route.params?.emergencyPlan ||
+      route.params?.paymentInfo ||
+      route.params?.hours
+    ) {
+      updateProfileState(route.params);
+    }
+  }, [
+    route.params?.userID,
+    route.params?.userGroup,
+    route.params?.name,
+    route.params?.address,
+    route.params?.phone,
+    route.params?.email,
+    route.params?.password,
+    route.params?.emergencyPlan,
+    route.params?.paymentInfo,
+    route.params?.hours,
+  ]);
+
   //Display heading and navigation
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ProfileSettings");
+            navigation.navigate("ProfileSettings", {
+              userID: profileState.userID,
+              userGroup: profileState.userGroup,
+              name: profileState.name,
+              address: profileState.address,
+              phone: profileState.phone,
+              email: profileState.email,
+              password: profileState.password,
+              emergencyPlan: profileState.emergencyPlan,
+              paymentInfo: profileState.paymentInfo,
+              hours: profileState.hours,
+            });
           }}
         >
           <Feather style={styles.navButtons} name="settings" size={24} />
@@ -107,11 +170,18 @@ const Profile = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text>Profile</Text>
-        <Text>Please Log In:</Text>
-        <Input></Input>
-      </View>
+      <ScrollView nestedScrollEnabled={true}>
+        <View>
+          <Text>Profile:</Text>
+          <Text>Group: {profileState.userGroup}</Text>
+          <Text>Name: {profileState.name}</Text>
+          <Text>Address: {profileState.address}</Text>
+          <Text>Phone #: {profileState.phone}</Text>
+          <Text>Email: {profileState.email}</Text>
+          <Text>Emergency Plan: {profileState.emergencyPlan}</Text>
+          <Text>Hours: {profileState.hours}</Text>
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
