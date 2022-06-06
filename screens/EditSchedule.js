@@ -65,12 +65,7 @@ const EditSchedule = ({ route, navigation }) => {
             });
           }}
         >
-          <Feather
-            style={{ marginRight: 10 }}
-            name="save"
-            size={24}
-            color="white"
-          />
+          <Feather style={{ marginRight: 10 }} name="save" size={24} color="white" />
         </TouchableOpacity>
       ),
     });
