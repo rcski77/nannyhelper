@@ -51,7 +51,7 @@ export function storeProfile(item) {
   push(reference, item);
 }
 
-export function setuProfileListener(updateFunc) {
+export function setupProfileListener(updateFunc) {
   const db = getDatabase();
   const reference = ref(db, "profileData/");
   onValue(reference, (snapshot) => {

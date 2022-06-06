@@ -109,6 +109,8 @@ const Profile = ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
       <View>
         <Text>Profile</Text>
+        <Text>Please Log In:</Text>
+        <Input></Input>
       </View>
     </SafeAreaView>
   );
