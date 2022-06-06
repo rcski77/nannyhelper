@@ -44,3 +44,40 @@ export function updateSchedule(item) {
     push(reference, item);
   }
 }
+
+// Methods for Profile Settings Data
+export function storeProfile(item) {
+  const db = getDatabase();
+  push(reference, item);
+}
+
+export function setuProfileListener(updateFunc) {
+  const db = getDatabase();
+  const reference = ref(db, "profileData/");
+  onValue(reference, (snapshot) => {
+    if (snapshot?.val()) {
+      const fbObject = snapshot.val();
+      const newArr = [];
+      Object.keys(fbObject).map((key, index) => {
+        newArr.push({ ...fbObject[key], id: key });
+      });
+      updateFunc(newArr);
+    } else {
+      updateFunc([]);
+    }
+  });
+}
+
+export function updateProfile(item) {
+  const db = getDatabase();
+  console.log(item);
+  if (item.id) {
+    const key = item.id;
+    delete item.id;
+    const reference = ref(db, `profileData/${key}`);
+    set(reference, item);
+  } else {
+    const reference = ref(db, "profileData/");
+    push(reference, item);
+  }
+}

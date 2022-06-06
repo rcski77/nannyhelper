@@ -12,6 +12,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import ProfileSettings from "./ProfileSettings";
+import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -44,7 +45,7 @@ const ProfileStackScreen = ({ route, navigation }) => {
 };
 
 const Profile = ({ route, navigation }) => {
-  //display heading and navigation
+  //Display heading and navigation
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -58,6 +59,51 @@ const Profile = ({ route, navigation }) => {
       ),
     });
   });
+
+  // const [profileList, setProfileList] = useState([]);
+
+  //Setup Firebase
+  useEffect(() => {
+    try {
+      initDB();
+    } catch (err) {
+      console.log(err);
+    }
+
+    // setupProfileListener((items) => {
+    //   setProfileList(items);
+    //   console.log(items);
+    // });
+  }, []);
+
+  //write schedule slots passed from add screen
+  useEffect(() => {
+    if (
+      route.params?.userID ||
+      route.params?.userGroup ||
+      route.params?.name ||
+      route.params?.address ||
+      route.params?.phone ||
+      route.params?.email ||
+      route.params?.password ||
+      route.params?.emergencyPlan ||
+      route.params?.paymentInfo ||
+      route.params?.hours
+    ) {
+      updateProfile(route.params);
+    }
+  }, [
+    route.params?.userID,
+    route.params?.userGroup,
+    route.params?.name,
+    route.params?.address,
+    route.params?.phone,
+    route.params?.email,
+    route.params?.password,
+    route.params?.emergencyPlan,
+    route.params?.paymentInfo,
+    route.params?.hours,
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>

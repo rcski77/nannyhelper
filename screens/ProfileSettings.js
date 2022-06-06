@@ -1,9 +1,18 @@
-import { StyleSheet, Text, View, ScrollView, SafeAreaView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+  TouchableHighlight,
+  TouchableOpacity,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Input } from "react-native-elements";
 import { RadioButton } from "react-native-paper";
+import { Feather } from "@expo/vector-icons";
 
 const ProfileSettings = ({ route, navigation }) => {
   // State Hook for User Profiles
@@ -117,8 +126,34 @@ const ProfileSettings = ({ route, navigation }) => {
   //useEffect for Radio Button
   useEffect(() => {
     updateProfileState({ userGroup: userGroupTypeRadio });
-    console.log(profileState.userGroup);
   }, [userGroupTypeRadio]);
+
+  //Navigation Header
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        //save edits and navigate back with new values
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Profile", {
+              userID: profileState.userID,
+              userGroup: profileState.userGroup,
+              name: profileState.name,
+              address: profileState.address,
+              phone: profileState.phone,
+              email: profileState.email,
+              password: profileState.password,
+              emergencyPlan: profileState.emergencyPlan,
+              paymentInfo: profileState.paymentInfo,
+              hours: profileState.hours,
+            });
+          }}
+        >
+          <Feather style={{ marginRight: 10 }} name="save" size={24} color="white" />
+        </TouchableOpacity>
+      ),
+    });
+  });
 
   return (
     <ScrollView nestedScrollEnabled={true}>
