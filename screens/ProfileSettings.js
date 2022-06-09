@@ -13,6 +13,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Input } from "react-native-elements";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 const ProfileSettings = ({ route, navigation }) => {
   // State Hook for User Profiles
@@ -158,6 +159,18 @@ const ProfileSettings = ({ route, navigation }) => {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <SafeAreaView style={styles.container}>
+        {/* TEMP BUTTON */}
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("CameraScreen");
+          }}
+        >
+          <View>
+            <Entypo name="camera" size={24} color="black" />
+            <Text>Take A Photo</Text>
+          </View>
+        </TouchableOpacity>
+        {/* TEMP BUTTON */}
         <View>
           <Text> userID: {profileState.id}</Text>
           <View>
@@ -247,6 +260,10 @@ const ProfileSettings = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  text: {
+    fontSize: 18,
+    fontWeight: "bold",
   },
 });
 
