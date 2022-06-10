@@ -13,6 +13,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
 import ProfileSettings from "./ProfileSettings";
+import CameraScreen from "./CameraScreen";
 import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
 
 const ProfileStack = createNativeStackNavigator();
@@ -40,6 +41,11 @@ const ProfileStackScreen = ({ route, navigation }) => {
         name="ProfileSettings"
         component={ProfileSettings}
         options={{ headerTitle: "Profile Settings" }}
+      />
+      <ProfileStack.Screen
+        name="CameraScreen"
+        component={CameraScreen}
+        options={{ headerTitle: "Camera" }}
       />
     </ProfileStack.Navigator>
   );
@@ -172,14 +178,14 @@ const Profile = ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView nestedScrollEnabled={true}>
         <View>
-          <Text>Profile:</Text>
-          <Text>Group: {profileState.userGroup}</Text>
-          <Text>Name: {profileState.name}</Text>
-          <Text>Address: {profileState.address}</Text>
-          <Text>Phone #: {profileState.phone}</Text>
-          <Text>Email: {profileState.email}</Text>
-          <Text>Emergency Plan: {profileState.emergencyPlan}</Text>
-          <Text>Hours: {profileState.hours}</Text>
+          <Text style={styles.text}>Profile:</Text>
+          <Text style={styles.text}>Group: {profileState.userGroup}</Text>
+          <Text style={styles.text}>Name: {profileState.name}</Text>
+          <Text style={styles.text}>Address: {profileState.address}</Text>
+          <Text style={styles.text}>Phone #: {profileState.phone}</Text>
+          <Text style={styles.text}>Email: {profileState.email}</Text>
+          <Text style={styles.text}>Emergency Plan: {profileState.emergencyPlan}</Text>
+          <Text style={styles.text}>Hours: {profileState.hours}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -193,6 +199,9 @@ const styles = StyleSheet.create({
   navButtons: {
     color: "white",
     margin: 10,
+  },
+  text: {
+    fontSize: 18,
   },
 });
 
