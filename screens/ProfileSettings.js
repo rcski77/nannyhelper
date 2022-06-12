@@ -41,89 +41,6 @@ const ProfileSettings = ({ route, navigation }) => {
     });
   };
 
-  // Updates profile information upon change
-  useEffect(() => {
-    // Profie user id check
-    let tempId = "";
-    if (route.params?.userID) {
-      tempId = route.params.userID;
-    }
-
-    // Profile user group check
-    if (route.params?.userGroup) {
-      updateProfileState({
-        userGroup: route.params.userGroup,
-      });
-    }
-
-    // Profile name check
-    if (route.params?.name) {
-      updateProfileState({
-        name: route.params.name,
-      });
-    }
-
-    // Profile address check
-    if (route.params?.address) {
-      updateProfileState({
-        address: route.params.address,
-      });
-    }
-
-    // Profile phone check
-    if (route.params?.phone) {
-      updateProfileState({
-        phone: route.params.phone,
-      });
-    }
-
-    // Profile email check
-    if (route.params?.email) {
-      updateProfileState({
-        email: route.params.email,
-      });
-    }
-
-    // Profile password check
-    if (route.params?.password) {
-      updateProfileState({
-        password: route.params.password,
-      });
-    }
-
-    // Profile emergency plan check
-    if (route.params?.emergencyPlan) {
-      updateProfileState({
-        emergencyPlan: route.params.emergencyPlan,
-      });
-    }
-
-    // Profile payment info check
-    if (route.params?.paymentInfo) {
-      updateProfileState({
-        paymentInfo: route.params.paymentInfo,
-      });
-    }
-
-    //Profile hours check
-    if (route.params?.hours) {
-      updateProfileState({
-        hours: route.params.hours,
-      });
-    }
-  }, [
-    route.params?.userID,
-    route.params?.userGroup,
-    route.params?.name,
-    route.params?.address,
-    route.params?.phone,
-    route.params?.email,
-    route.params?.password,
-    route.params?.emergencyPlan,
-    route.params?.paymentInfo,
-    route.params?.hours,
-  ]);
-
   //useEffect for Radio Button
   useEffect(() => {
     updateProfileState({ userGroup: userGroupTypeRadio });
@@ -155,6 +72,44 @@ const ProfileSettings = ({ route, navigation }) => {
       ),
     });
   });
+
+  // Callback to explicitly change useState Values
+  const forcedStateUpdate = useCallback(() => {
+    updateProfileState(route.params);
+  });
+
+  // Updates profile information upon change
+  useEffect(() => {
+    if (
+      route.params?.userID ||
+      route.params?.userGroup ||
+      route.params?.name ||
+      route.params?.address ||
+      route.params?.phone ||
+      route.params?.email ||
+      route.params?.password ||
+      route.params?.emergencyPlan ||
+      route.params?.paymentInfo ||
+      route.params?.hours
+    ) {
+      // Values of input changes
+      updateProfileState(route.params);
+
+      // Explicitly ensures the useState Profile Value Changes
+      forcedStateUpdate();
+    }
+  }, [
+    route.params?.userID,
+    route.params?.userGroup,
+    route.params?.name,
+    route.params?.address,
+    route.params?.phone,
+    route.params?.email,
+    route.params?.password,
+    route.params?.emergencyPlan,
+    route.params?.paymentInfo,
+    route.params?.hours,
+  ]);
 
   return (
     <ScrollView nestedScrollEnabled={true}>
