@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableHighlight,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
@@ -14,6 +15,7 @@ import { Input } from "react-native-elements";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 
 const ProfileSettings = ({ route, navigation }) => {
   // State Hook for User Profiles
@@ -111,10 +113,69 @@ const ProfileSettings = ({ route, navigation }) => {
     route.params?.hours,
   ]);
 
+  // imageURI statehook
+  const [imageURI, setImageURI] = useState(null);
+
+  const pickProfileImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      // Allows for only images
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+
+      // Allows for editing
+      allowsEditing: true,
+
+      // Image editted at 1:1 Aspect Ratio
+      aspect: [1, 1],
+
+      // Picks highest Image Quality
+      quality: 1,
+
+      // Ensures image data is formatted
+      base64: true,
+
+      //Excludes EXIF data
+      exif: false,
+    });
+
+    // console.log(result);
+
+    if (!result.cancelled) {
+      setImageURI(result.uri);
+    }
+  };
+
+  // UseEffect Hook to pull cache Image URI from camera screen
+  useEffect(() => {
+    if (route.params.photoURI) {
+      // Values of input changes
+
+      setImageURI(route.params.photoURI);
+      forcedImageURIStateChange();
+    }
+  }, [route.params?.photoURI]);
+
+  // Callback to explicitly change useState Values
+  const forcedImageURIStateChange = useCallback(() => {
+    setImageURI(route.params.photoURI);
+  });
+
   return (
     <ScrollView nestedScrollEnabled={true}>
       <SafeAreaView style={styles.container}>
-        {/* TEMP BUTTON */}
+        {/* Image Component, if imageURI is exists, else placeholder*/}
+        {imageURI ? (
+          <Image source={{ uri: imageURI }} style={{ width: 200, height: 200 }} />
+        ) : (
+          <Text>Please Select an Profile Image...</Text>
+        )}
+        {/* Image Picker Button */}
+        <TouchableOpacity onPress={pickProfileImage}>
+          <View>
+            <Entypo name="images" size={24} color="black" />
+            <Text>Select a photo</Text>
+          </View>
+        </TouchableOpacity>
+        {/* Button to Camera Screen */}
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("CameraScreen");
