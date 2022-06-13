@@ -1,20 +1,64 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { NavigationContainer } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
+
+import Schedule from "./screens/Schedule";
+import ScheduleStackScreen from "./screens/Schedule";
+import ProfileStackScreen from "./screens/Profile";
+
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+    <NavigationContainer>
+      <Tab.Navigator
+        initialRouteName="Profile"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "#3c4754",
+          },
+          headerTintColor: "#fff",
+          headerTitleAlign: "center",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+          headerShown: false,
+          tabBarActiveBackgroundColor: "#3c4754",
+          tabBarActiveTintColor: "#fff",
+          tabBarLabelStyle: { fontSize: 14 },
+        }}
+      >
+        <Tab.Screen
+          name="ProfileStackScreen"
+          component={ProfileStackScreen}
+          options={{
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ color }) => <Feather name="user" size={24} color={color} />,
+          }}
+        />
+
+        <Tab.Screen
+          name="ScheduleStackScreen"
+          component={ScheduleStackScreen}
+          options={{
+            tabBarLabel: "Schedule",
+            tabBarIcon: ({ color }) => <Feather name="calendar" size={24} color={color} />,
+          }}
+        />
+      </Tab.Navigator>
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
