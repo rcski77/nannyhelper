@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native-gesture-handler";
@@ -54,6 +55,7 @@ const ProfileStackScreen = ({ route, navigation }) => {
 const Profile = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
+    profileURI: "",
     userID: "",
     userGroup: "",
     name: "",
@@ -77,6 +79,7 @@ const Profile = ({ route, navigation }) => {
   // Updates profile information upon change
   useEffect(() => {
     if (
+      route.params?.profileURI ||
       route.params?.userID ||
       route.params?.userGroup ||
       route.params?.name ||
@@ -91,6 +94,7 @@ const Profile = ({ route, navigation }) => {
       updateProfileState(route.params);
     }
   }, [
+    route.params?.profileURI,
     route.params?.userID,
     route.params?.userGroup,
     route.params?.name,
@@ -110,6 +114,7 @@ const Profile = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ProfileSettings", {
+              profileURI: profileState.profileURI,
               userID: profileState.userID,
               userGroup: profileState.userGroup,
               name: profileState.name,
@@ -145,9 +150,10 @@ const Profile = ({ route, navigation }) => {
     // });
   }, []);
 
-  //write schedule slots passed from add screen
+  //write profile onto FB Database
   useEffect(() => {
     if (
+      route.params?.profileURI ||
       route.params?.userID ||
       route.params?.userGroup ||
       route.params?.name ||
@@ -162,6 +168,7 @@ const Profile = ({ route, navigation }) => {
       updateProfile(route.params);
     }
   }, [
+    route.params?.profileURI,
     route.params?.userID,
     route.params?.userGroup,
     route.params?.name,
@@ -179,6 +186,12 @@ const Profile = ({ route, navigation }) => {
       <ScrollView nestedScrollEnabled={true}>
         <View>
           <Text style={styles.text}>Profile:</Text>
+          {/* Image Component, if imageURI is exists, else placeholder*/}
+          {profileState.profileURI ? (
+            <Image source={{ uri: profileState.profileURI }} style={{ width: 200, height: 200 }} />
+          ) : (
+            <Text>No Images</Text>
+          )}
           <Text style={styles.text}>Group: {profileState.userGroup}</Text>
           <Text style={styles.text}>Name: {profileState.name}</Text>
           <Text style={styles.text}>Address: {profileState.address}</Text>

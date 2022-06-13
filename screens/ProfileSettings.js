@@ -16,10 +16,14 @@ import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
+//---------------------------------------------------------
+import { initDB, upload } from "../helpers/fb_storage_helper";
+//---------------------------------------------------------
 
 const ProfileSettings = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
+    profileURI: "",
     userID: "",
     userGroup: "",
     name: "",
@@ -56,6 +60,7 @@ const ProfileSettings = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("Profile", {
+              profileURI: imageURI,
               userID: profileState.userID,
               userGroup: profileState.userGroup,
               name: profileState.name,
@@ -83,6 +88,7 @@ const ProfileSettings = ({ route, navigation }) => {
   // Updates profile information upon change
   useEffect(() => {
     if (
+      route.params?.profileURI ||
       route.params?.userID ||
       route.params?.userGroup ||
       route.params?.name ||
@@ -101,6 +107,7 @@ const ProfileSettings = ({ route, navigation }) => {
       forcedStateUpdate();
     }
   }, [
+    route.params?.profileURI,
     route.params?.userID,
     route.params?.userGroup,
     route.params?.name,
@@ -114,7 +121,7 @@ const ProfileSettings = ({ route, navigation }) => {
   ]);
 
   // imageURI statehook
-  const [imageURI, setImageURI] = useState(null);
+  const [imageURI, setImageURI] = useState(null); //Originally set to null
 
   const pickProfileImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -145,6 +152,9 @@ const ProfileSettings = ({ route, navigation }) => {
   };
 
   // UseEffect Hook to pull cache Image URI from camera screen
+  // NOTE: FIREBASE RELATED - May not work w/ firebase code since it requires image binary - (RESOLVED, SEE fb_storage_helper.js)
+  // NOTE: FIREBASE RELATED - May Need to figure out how to move image over between screen without errors - (RESOLVED, SEE fb_storage_helper.js)
+  // COMMENT OUT FROM HERE - IF SOLUTION CANNOT BE SOLVE
   useEffect(() => {
     if (route.params.photoURI) {
       // Values of input changes
@@ -158,6 +168,57 @@ const ProfileSettings = ({ route, navigation }) => {
   const forcedImageURIStateChange = useCallback(() => {
     setImageURI(route.params.photoURI);
   });
+  // COMMENT OUT TO HERE
+
+  //---------------------------------------------------------
+  // TODO: Implement Firebase Storage and Means to Pesist Firebase ImageURI
+  // WIP PROGRESS IMCOMPLETE
+  // Setup Firebase Storage
+  useEffect(() => {
+    try {
+      initDB();
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const [loading, setLoading] = useState(false);
+  const [confirmProfileSave, setConfirmProfileSave] = useState(false);
+  const uploadImage = () => {
+    if (imageURI) {
+      setConfirmProfileSave(false);
+      //Upload takes 4 parameters in the following order: (1) image URI (2) currentuserID (3) setLoading (4) setImageURI
+      //Uploads image into firebase and gives unique name based on User ID
+      //Toggles on and off loading flag inbetween upload
+      //Update imageURI to link to firebase
+      upload(imageURI, profileState.userID, setLoading, setImageURI);
+      setConfirmProfileSave(true);
+    }
+  };
+
+  // Only triggers if you save profiles
+  useEffect(() => {
+    updateProfileState({ profileURI: imageURI });
+    forcedProfileURIStateChange();
+
+    console.log("COOL CAT");
+    console.log(profileState.profileURI);
+  }, [confirmProfileSave]);
+
+  // Callback to explicitly change useState Values
+  const forcedProfileURIStateChange = useCallback(() => {
+    updateProfileState({ profileURI: imageURI });
+  });
+
+  useEffect(() => {
+    if (route.params.profileURI) {
+      // Values of input changes
+
+      setImageURI(route.params.profileURI);
+    }
+  }, [route.params?.profileURI]);
+
+  //---------------------------------------------------------
 
   return (
     <ScrollView nestedScrollEnabled={true}>
@@ -168,6 +229,7 @@ const ProfileSettings = ({ route, navigation }) => {
         ) : (
           <Text>Please Select an Profile Image...</Text>
         )}
+
         {/* Image Picker Button */}
         <TouchableOpacity onPress={pickProfileImage}>
           <View>
@@ -175,6 +237,7 @@ const ProfileSettings = ({ route, navigation }) => {
             <Text>Select a photo</Text>
           </View>
         </TouchableOpacity>
+
         {/* Button to Camera Screen */}
         <TouchableOpacity
           onPress={() => {
@@ -186,9 +249,20 @@ const ProfileSettings = ({ route, navigation }) => {
             <Text>Take A Photo</Text>
           </View>
         </TouchableOpacity>
-        {/* TEMP BUTTON */}
+
+        {/* Button Save on Firebase Storage Button */}
+        <TouchableOpacity onPress={uploadImage} disabled={loading || !imageURI}>
+          <View>
+            <Entypo name="save" size={24} color="black" />
+            <Text>Confirm Profile Image</Text>
+          </View>
+        </TouchableOpacity>
+
         <View>
-          <Text> userID: {profileState.id}</Text>
+          {/* USER ID PLACE HOLDER */}
+          <Text> userID: {profileState.userID}</Text>
+
+          {/* USER GROUP RADIO BUTTON SELECTION */}
           <View>
             <Text>Please Select Your User Group:</Text>
             <Text>Parents</Text>
@@ -210,6 +284,8 @@ const ProfileSettings = ({ route, navigation }) => {
               }}
             />
           </View>
+
+          {/* OTHER INPUTS */}
           <Input
             placeholder="Name"
             value={profileState.name}
