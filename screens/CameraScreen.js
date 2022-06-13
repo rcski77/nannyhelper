@@ -84,8 +84,13 @@ const CameraScreen = ({ route, navigation }) => {
   let takePhoto = async () => {
     // Camera Picture Options
     let options = {
+      // Picks highest Image Quality
       quality: 1,
+
+      // Ensures image data is formatted
       base64: true,
+
+      //Excludes EXIF data
       exif: false,
     };
 
@@ -102,7 +107,7 @@ const CameraScreen = ({ route, navigation }) => {
     //Save Photo
     let savePhoto = () => {
       // Save photos to media
-      MediaLibrary.saveToLibraryAsync.then(() => {
+      MediaLibrary.saveToLibraryAsync(photo.uri).then(() => {
         // Save photo URL so we can bring back to profile edit screen and profile screen
         // Note, probably not very useful as this is only a cached URI.
         setPhotoURI(photo.uri);
