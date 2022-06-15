@@ -3,16 +3,16 @@ import {
   StyleSheet,
   Text,
   View,
-  Keyboard,
-  TouchableWithoutFeedback,
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
   Image,
 } from "react-native";
+import { Divider, Image } from "react-native-elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { FlatList } from "react-native-gesture-handler";
+import DropDownPicker from "react-native-dropdown-picker";
 import { Feather } from "@expo/vector-icons";
+
 import ProfileSettings from "./ProfileSettings";
 import CameraScreen from "./CameraScreen";
 import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
@@ -134,8 +134,6 @@ const Profile = ({ route, navigation }) => {
     });
   });
 
-  // const [profileList, setProfileList] = useState([]);
-
   //Setup Firebase
   useEffect(() => {
     try {
@@ -144,13 +142,39 @@ const Profile = ({ route, navigation }) => {
       console.log(err);
     }
 
-    // setupProfileListener((items) => {
-    //   setProfileList(items);
-    //   console.log(items);
-    // });
+    setupProfileListener((items) => {
+      setProfileList(items);
+      console.log("List of profiles: ", items);
+    });
   }, []);
 
-  //write profile onto FB Database
+  //Profile picker
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileValue, setProfileValue] = useState(null);
+  const [profileList, setProfileList] = useState([]);
+
+  const selectProfile = (profile) => {
+    updateProfileState(profile);
+  };
+
+  const renderProfilePic = (profile) => {
+    if (profile.profileURI == "") {
+      return (
+        <View>
+          <Text style={{ marginBottom: 10 }}>No profile picture set</Text>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={{ uri: profile.profileURI }}
+          style={{ width: 150, height: 150, borderRadius: 75 }}
+        />
+      );
+    }
+  };
+
+  //write schedule slots passed from add screen
   useEffect(() => {
     if (
       route.params?.profileURI ||
@@ -183,22 +207,62 @@ const Profile = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <DropDownPicker
+          placeholder="Select profile"
+          schema={{
+            label: "name",
+            value: "id",
+          }}
+          open={profileOpen}
+          value={profileValue}
+          items={profileList}
+          setOpen={setProfileOpen}
+          setValue={setProfileValue}
+          setItems={setProfileList}
+          onSelectItem={selectProfile}
+          containerStyle={{ marginTop: 5 }}
+        />
+      </View>
+      <Divider orientation="horizontal" width={5} margin={5} />
       <ScrollView nestedScrollEnabled={true}>
+        <View style={styles.profilePic}>{renderProfilePic(profileState)}</View>
         <View>
-          <Text style={styles.text}>Profile:</Text>
-          {/* Image Component, if imageURI is exists, else placeholder*/}
-          {profileState.profileURI ? (
-            <Image source={{ uri: profileState.profileURI }} style={{ width: 200, height: 200 }} />
-          ) : (
-            <Text>No Images</Text>
-          )}
-          <Text style={styles.text}>Group: {profileState.userGroup}</Text>
-          <Text style={styles.text}>Name: {profileState.name}</Text>
-          <Text style={styles.text}>Address: {profileState.address}</Text>
-          <Text style={styles.text}>Phone #: {profileState.phone}</Text>
-          <Text style={styles.text}>Email: {profileState.email}</Text>
-          <Text style={styles.text}>Emergency Plan: {profileState.emergencyPlan}</Text>
-          <Text style={styles.text}>Hours: {profileState.hours}</Text>
+          <View style={styles.nameBlock}>
+            <Text style={styles.name}>{profileState.name}</Text>
+            <Text style={styles.nameSub}>Group: {profileState.userGroup}</Text>
+            <Text style={styles.nameSub}>ProfileID: {profileState.id}</Text>
+          </View>
+          <Divider orientation="horizontal" width={5} margin={5} />
+          <Text style={styles.hours}>{profileState.hours} hours worked</Text>
+          <View style={styles.profileElement}>
+            <Feather name="compass" size={24} color="#636363" />
+            <Text style={styles.profileText}>Address</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.address}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="phone" size={24} color="#636363" />
+            <Text style={styles.profileText}>Phone #</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.phone}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="mail" size={24} color="#636363" />
+            <Text style={styles.profileText}>Email</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.email}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="alert-triangle" size={24} color="#636363" />
+            <Text style={styles.profileText}>Emergency Plan</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.emergencyPlan}</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -207,7 +271,7 @@ const Profile = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
   },
   navButtons: {
     color: "white",
@@ -215,6 +279,37 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
+    marginLeft: 30,
+    marginBottom: 5,
+  },
+  profilePic: {
+    alignItems: "center",
+  },
+  nameBlock: {
+    alignItems: "center",
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 24,
+  },
+  nameSub: {
+    fontSize: 12,
+  },
+  hours: {
+    fontSize: 18,
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+  profileElement: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  profileText: {
+    fontSize: 20,
+    flex: 1,
+    color: "#636363",
+    marginLeft: 5,
   },
 });
 

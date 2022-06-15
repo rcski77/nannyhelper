@@ -4,13 +4,11 @@ import {
   View,
   ScrollView,
   SafeAreaView,
-  TouchableHighlight,
   TouchableOpacity,
   Image,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
 import { Input } from "react-native-elements";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
