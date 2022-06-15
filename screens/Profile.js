@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
 import { Divider, Image } from "react-native-elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import DropDownPicker from "react-native-dropdown-picker";
