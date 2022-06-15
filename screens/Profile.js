@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import { Divider, Image } from "react-native-elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -14,12 +15,7 @@ import { Feather } from "@expo/vector-icons";
 
 import ProfileSettings from "./ProfileSettings";
 import CameraScreen from "./CameraScreen";
-import {
-  initDB,
-  setupProfileListener,
-  storeProfile,
-  updateProfile,
-} from "../helpers/fb_helper";
+import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -59,6 +55,7 @@ const ProfileStackScreen = ({ route, navigation }) => {
 const Profile = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
+    profileURI: "",
     userID: "",
     userGroup: "",
     name: "",
@@ -82,6 +79,7 @@ const Profile = ({ route, navigation }) => {
   // Updates profile information upon change
   useEffect(() => {
     if (
+      route.params?.profileURI ||
       route.params?.userID ||
       route.params?.userGroup ||
       route.params?.name ||
@@ -96,6 +94,7 @@ const Profile = ({ route, navigation }) => {
       updateProfileState(route.params);
     }
   }, [
+    route.params?.profileURI,
     route.params?.userID,
     route.params?.userGroup,
     route.params?.name,
@@ -115,6 +114,7 @@ const Profile = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ProfileSettings", {
+              profileURI: profileState.profileURI,
               userID: profileState.userID,
               userGroup: profileState.userGroup,
               name: profileState.name,
@@ -159,10 +159,14 @@ const Profile = ({ route, navigation }) => {
 
   const renderProfilePic = (profile) => {
     if (profile.profileURI == "") {
-      return <View><Text style={{marginBottom: 10}}>No profile picture set</Text></View>;
+      return (
+        <View>
+          <Text style={{ marginBottom: 10 }}>No profile picture set</Text>
+        </View>
+      );
     } else {
-      return(
-        <Image 
+      return (
+        <Image
           source={{ uri: profile.profileURI }}
           style={{ width: 150, height: 150, borderRadius: 75 }}
         />
@@ -173,6 +177,7 @@ const Profile = ({ route, navigation }) => {
   //write schedule slots passed from add screen
   useEffect(() => {
     if (
+      route.params?.profileURI ||
       route.params?.userID ||
       route.params?.userGroup ||
       route.params?.name ||
@@ -187,6 +192,7 @@ const Profile = ({ route, navigation }) => {
       updateProfile(route.params);
     }
   }, [
+    route.params?.profileURI,
     route.params?.userID,
     route.params?.userGroup,
     route.params?.name,
@@ -202,34 +208,32 @@ const Profile = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-          <DropDownPicker
-            placeholder="Select profile" 
-            schema={{
-              label: 'name',
-              value: 'id'
-            }}
-            open={profileOpen}
-            value={profileValue}
-            items={profileList}
-            setOpen={setProfileOpen}
-            setValue={setProfileValue}
-            setItems={setProfileList}
-            onSelectItem={selectProfile}
-            containerStyle={{ marginTop: 5 }}
-          />
-        </View>
-        <Divider orientation="horizontal" width={5} margin={5}/>
+        <DropDownPicker
+          placeholder="Select profile"
+          schema={{
+            label: "name",
+            value: "id",
+          }}
+          open={profileOpen}
+          value={profileValue}
+          items={profileList}
+          setOpen={setProfileOpen}
+          setValue={setProfileValue}
+          setItems={setProfileList}
+          onSelectItem={selectProfile}
+          containerStyle={{ marginTop: 5 }}
+        />
+      </View>
+      <Divider orientation="horizontal" width={5} margin={5} />
       <ScrollView nestedScrollEnabled={true}>
-        <View style={styles.profilePic}>
-          {renderProfilePic(profileState)}
-        </View>
+        <View style={styles.profilePic}>{renderProfilePic(profileState)}</View>
         <View>
           <View style={styles.nameBlock}>
             <Text style={styles.name}>{profileState.name}</Text>
             <Text style={styles.nameSub}>Group: {profileState.userGroup}</Text>
             <Text style={styles.nameSub}>ProfileID: {profileState.id}</Text>
           </View>
-          <Divider orientation="horizontal" width={5} margin={5}/>
+          <Divider orientation="horizontal" width={5} margin={5} />
           <Text style={styles.hours}>{profileState.hours} hours worked</Text>
           <View style={styles.profileElement}>
             <Feather name="compass" size={24} color="#636363" />
@@ -258,7 +262,7 @@ const Profile = ({ route, navigation }) => {
           </View>
           <View>
             <Text style={styles.text}>{profileState.emergencyPlan}</Text>
-          </View>       
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -267,7 +271,7 @@ const Profile = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    display: "flex"
+    display: "flex",
   },
   navButtons: {
     color: "white",
@@ -282,7 +286,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nameBlock: {
-    alignItems: "center"
+    alignItems: "center",
   },
   name: {
     fontWeight: "bold",
@@ -306,7 +310,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: "#636363",
     marginLeft: 5,
-  }
+  },
 });
 
 export default ProfileStackScreen;
