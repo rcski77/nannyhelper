@@ -1,11 +1,11 @@
 import axios from "axios";
 import { YT_KEY } from "./YoutubeKey";
 
-const OWServer = axios.create({
+const YTServer = axios.create({
   baseURL: "https://www.googleapis.com/youtube/v3/search",
 });
 
-OWServer.interceptors.request.use(
+YTServer.interceptors.request.use(
   // called when request is made.
   async (config) => {
     config.headers.Accept = "application/json";
@@ -19,7 +19,7 @@ OWServer.interceptors.request.use(
 );
 
 //Our helper function here is a long standing HTTP request so we mark it as async
-export const getWeather = async (callback, videoQueryString) => {
+export const getVideos = async (callback, videoQueryString) => {
   console.log(videoQueryString);
 
   // We need convert the string's spacing " " to "%20" for compatible youtube query searching
@@ -28,14 +28,14 @@ export const getWeather = async (callback, videoQueryString) => {
   let formattedQueryString = videoQueryString.replace(/ /g, "%20");
   console.log(formattedQueryString);
 
-  const response = await OWServer.get(
+  const response = await YTServer.get(
     // Have query key, q, start with "parenting" value
     // And any user keyword input into query
 
-    `?channelType=any&maxResults=20&order=viewCount&q=parenting%20${formattedQueryString}&safeSearch=moderate&key=${YT_KEY}`
+    `?channelType=any&maxResults=20&order=viewCount&q=parenting%20${formattedQueryString}&part=snippet&safeSearch=moderate&key=${YT_KEY}`
   );
 
   callback(response.data);
 };
 
-export default OWServer;
+export default YTServer;

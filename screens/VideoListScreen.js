@@ -2,8 +2,9 @@ import { Button, StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { BaseRouter } from "@react-navigation/native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import YTViewerScreen from "./YTViewerScreen";
+import { getVideos } from "../api/YoutubeServer";
 
 const YTVideoFeedStack = createNativeStackNavigator();
 
@@ -40,6 +41,15 @@ const YTVideoFeedStackScreen = ({ route, navigation }) => {
 };
 
 const VideoListScreen = ({ navigation }) => {
+  //Allow Users to provide additional help search
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    getVideos((data) => {
+      console.log("recieved: ", data);
+    }, searchQuery);
+  }, [searchQuery]);
+
   return (
     <View>
       <Button
