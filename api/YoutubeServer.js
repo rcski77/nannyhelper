@@ -31,8 +31,8 @@ export const getVideos = async (callback, videoQueryString) => {
   const response = await YTServer.get(
     // Have query key, q, start with "parenting" value
     // And any user keyword input into query
-
-    `?channelType=any&maxResults=20&order=viewCount&q=parenting%20${formattedQueryString}&part=snippet&safeSearch=moderate&key=${YT_KEY}`
+    // Limit search to 2 videos to minimize change of quota limit
+    `?channelType=any&maxResults=2&order=viewCount&q=parenting%20tips%20${formattedQueryString}&part=snippet&safeSearch=moderate&key=${YT_KEY}`
   );
 
   callback(response.data);

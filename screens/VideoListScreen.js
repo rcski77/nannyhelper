@@ -1,6 +1,16 @@
-import { Button, StyleSheet, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Input, ListItem, Image } from "react-native-elements";
 import { BaseRouter } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import YTViewerScreen from "./YTViewerScreen";
@@ -44,24 +54,91 @@ const VideoListScreen = ({ navigation }) => {
   //Allow Users to provide additional help search
   const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    getVideos((data) => {
-      console.log("recieved: ", data);
-    }, searchQuery);
-  }, [searchQuery]);
+  //Copies JSON over to usestate variable
+  const [videos, setVideos] = useState([]);
 
+  // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW
+  // ------------------------------------------
+  // useEffect(() => {
+  //   getVideos((data) => {
+  //     console.log("recieved: ", data);
+  //     setVideos(data.items);
+  //   }, searchQuery);
+  // }, []);
+  // ------------------------------------------
+
+  // RenderVideo takes in two arguments and use JS destructure to
+  // ge these values right into these variables
+  const renderVideo = ({ index, item }) => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate("YTViewerScreen", item);
+        }}
+      >
+        <ListItem key={index}>
+          <Image source={{ uri: item.snippet.thumbnails.default.url }} style={styles.thumbnails} />
+          <ListItem.Content>
+            <ListItem.Title>{item.snippet.title}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Chevron />
+        </ListItem>
+      </TouchableOpacity>
+    );
+  };
   return (
     <View>
-      <Button
-        title="Goto YTViewerScreen"
-        onPress={() => {
-          navigation.navigate("YTViewerScreen", "video to be displayed");
+      <Input
+        placeholder="Search Parenting Tips"
+        value={searchQuery}
+        onChangeText={(val) => {
+          setSearchQuery(val);
         }}
+      />
+
+      <View style={styles.padder}>
+        <Button
+          title="Search"
+          onPress={() => {
+            getVideos((data) => {
+              console.log("recieved: ", data);
+              setVideos(data.items);
+            }, searchQuery);
+          }}
+        />
+      </View>
+
+      <View style={styles.padder}>
+        <Button
+          title="Clear"
+          onPress={() => {
+            setSearchQuery("");
+          }}
+        />
+      </View>
+
+      <FlatList
+        data={videos}
+        keyExtractor={(item) => item.id.videoId}
+        //Rerender or update whenever we change the state w/ this attribute
+        extraData={videos}
+        renderItem={renderVideo} //index, item
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  thumbnails: {
+    width: 100,
+    height: 55,
+  },
+  padder: {
+    margin: 10,
+  },
+});
 
 export default YTVideoFeedStackScreen;
