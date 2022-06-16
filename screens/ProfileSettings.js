@@ -21,17 +21,17 @@ import { initDB, upload } from "../helpers/fb_storage_helper";
 const ProfileSettings = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
-    profileURI: "",
-    userID: "",
-    userGroup: "",
-    name: "",
-    address: "",
-    phone: "",
-    email: "",
-    password: "",
-    emergencyPlan: "",
-    paymentInfo: "",
-    hours: "",
+    profileURI: route.params?.profileURI,
+    id: route.params?.id,
+    userGroup: route.params?.userGroup,
+    name: route.params?.name,
+    address: route.params?.address,
+    phone: route.params?.phone,
+    email: route.params?.email,
+    password: route.params?.password,
+    emergencyPlan: route.params?.emergencyPlan,
+    paymentInfo: route.params?.paymentInfo,
+    hours: route.params?.hours,
   });
 
   // State Hooks for User Group Selection Radio Buttons
@@ -59,7 +59,7 @@ const ProfileSettings = ({ route, navigation }) => {
           onPress={() => {
             navigation.navigate("Profile", {
               profileURI: imageURI,
-              userID: profileState.userID,
+              id: profileState.id,
               userGroup: profileState.userGroup,
               name: profileState.name,
               address: profileState.address,
@@ -87,7 +87,7 @@ const ProfileSettings = ({ route, navigation }) => {
   useEffect(() => {
     if (
       route.params?.profileURI ||
-      route.params?.userID ||
+      route.params?.id ||
       route.params?.userGroup ||
       route.params?.name ||
       route.params?.address ||
@@ -106,7 +106,7 @@ const ProfileSettings = ({ route, navigation }) => {
     }
   }, [
     route.params?.profileURI,
-    route.params?.userID,
+    route.params?.id,
     route.params?.userGroup,
     route.params?.name,
     route.params?.address,
@@ -189,8 +189,9 @@ const ProfileSettings = ({ route, navigation }) => {
       //Uploads image into firebase and gives unique name based on User ID
       //Toggles on and off loading flag inbetween upload
       //Update imageURI to link to firebase
-      upload(imageURI, profileState.userID, setLoading, setImageURI);
+      upload(imageURI, profileState.id, setLoading, setImageURI);
       setConfirmProfileSave(true);
+      console.log(imageURI);
     }
   };
 
@@ -258,7 +259,7 @@ const ProfileSettings = ({ route, navigation }) => {
 
         <View>
           {/* USER ID PLACE HOLDER */}
-          <Text> userID: {profileState.userID}</Text>
+          <Text> id: {profileState.id}</Text>
 
           {/* USER GROUP RADIO BUTTON SELECTION */}
           <View>

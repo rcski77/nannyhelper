@@ -7,12 +7,12 @@ export function initDB() {
   console.log("SUCCESS");
 }
 
-export async function upload(fileURI, userID, setLoading, setImageURI) {
+export async function upload(fileURI, id, setLoading, setImageURI) {
   console.log("FLAG 0");
   const storageFB = getStorage();
 
   console.log("FLAG 1");
-  const uriName = "profiles/profile-pic-" + userID + ".jpg";
+  const uriName = "profiles/profile-pic-" + id + ".jpg";
   const fileRef = ref(storageFB, uriName);
 
   console.log("FLAG 2");
