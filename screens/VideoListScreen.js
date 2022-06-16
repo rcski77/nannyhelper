@@ -87,50 +87,55 @@ const VideoListScreen = ({ navigation }) => {
     );
   };
   return (
-    <View>
-      <Input
-        placeholder="Search Parenting Tips"
-        value={searchQuery}
-        onChangeText={(val) => {
-          setSearchQuery(val);
-          console.log(searchQuery);
-        }}
-      />
-
-      <View style={styles.padder}>
-        <Button
-          title="Search"
-          onPress={() => {
-            console.log(searchQuery);
-            // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW, IF QUOTA IS MET
-            // ------------------------------------------
-            getVideos((data) => {
-              console.log("recieved: ", data);
-              setVideos(data.items);
-            }, searchQuery);
-            // ------------------------------------------
-          }}
-        />
-      </View>
-
-      <View style={styles.padder}>
-        <Button
-          title="Clear"
-          onPress={() => {
-            setSearchQuery("");
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View>
+        <Input
+          placeholder="Search Parenting Tips"
+          value={searchQuery}
+          onChangeText={(val) => {
+            setSearchQuery(val);
             console.log(searchQuery);
           }}
         />
-      </View>
 
-      <FlatList
-        data={videos}
-        keyExtractor={(item) => item.id.videoId}
-        //Rerender or update whenever we change the state w/ this attribute
-        extraData={videos}
-        renderItem={renderVideo} //index, item
-      />
-    </View>
+        <View style={styles.padder}>
+          <Button
+            title="Search"
+            onPress={() => {
+              console.log(searchQuery);
+              // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW, IF QUOTA IS MET
+              // ------------------------------------------
+              getVideos((data) => {
+                console.log("recieved: ", data);
+                setVideos(data.items);
+              }, searchQuery);
+              // ------------------------------------------
+
+              Keyboard.dismiss();
+            }}
+          />
+        </View>
+
+        <View style={styles.padder}>
+          <Button
+            title="Clear"
+            onPress={() => {
+              setSearchQuery("");
+              console.log(searchQuery);
+              Keyboard.dismiss();
+            }}
+          />
+        </View>
+
+        <FlatList
+          data={videos}
+          keyExtractor={(item) => item.id.videoId}
+          //Rerender or update whenever we change the state w/ this attribute
+          extraData={videos}
+          renderItem={renderVideo} //index, item
+        />
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
