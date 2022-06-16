@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "241564135279",
+    "firebase_url": "https://nannyhelper-99ece-default-rtdb.firebaseio.com",
+    "project_id": "nannyhelper-99ece",
+    "storage_bucket": "nannyhelper-99ece.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241564135279:android:f520327af59a444fc5c29a",
+        "android_client_info": {
+          "package_name": "edu.gvsu.nannyhelper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "241564135279-g0qub9a6ek4afkubjvo2fr4oecr9d3oa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5F7KQy12qWU18fNENFkT0tpY5o1hIUl4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "241564135279-g0qub9a6ek4afkubjvo2fr4oecr9d3oa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
