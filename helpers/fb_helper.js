@@ -8,6 +8,10 @@ export function initDB() {
   initializeApp(firebaseConfig);
 }
 
+export function initAnalytics(app) {
+  getAnalytics(app);
+}
+
 export function storeScheduleSlot(item) {
   const db = getDatabase();
 
