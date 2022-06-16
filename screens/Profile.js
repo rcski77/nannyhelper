@@ -7,7 +7,7 @@ import { Feather } from "@expo/vector-icons";
 
 import ProfileSettings from "./ProfileSettings";
 import CameraScreen from "./CameraScreen";
-import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
+import { initDB, setupProfileListener, updateProfile } from "../helpers/fb_helper";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -123,6 +123,27 @@ const Profile = ({ route, navigation }) => {
           <Feather style={styles.navButtons} name="settings" size={24} />
         </TouchableOpacity>
       ),
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ProfileSettings", {
+              profileURI: "",
+              id: "",
+              userGroup: "",
+              name: "",
+              address: "",
+              phone: "",
+              email: "",
+              password: "",
+              emergencyPlan: "",
+              paymentInfo: "",
+              hours: "",
+            });
+          }}
+        >
+          <Feather style={styles.navButtons} name="plus" size={24} />
+        </TouchableOpacity>
+      )
     });
   });
 
@@ -136,7 +157,7 @@ const Profile = ({ route, navigation }) => {
 
     setupProfileListener((items) => {
       setProfileList(items);
-      console.log("List of profiles: ", items);
+      //console.log("List of profiles: ", items);
     });
   }, []);
 
@@ -166,7 +187,7 @@ const Profile = ({ route, navigation }) => {
     }
   };
 
-  //write schedule slots passed from add screen
+  //write profile state passed from add screen to fb
   useEffect(() => {
     if (
       route.params?.profileURI ||
@@ -181,20 +202,11 @@ const Profile = ({ route, navigation }) => {
       route.params?.paymentInfo ||
       route.params?.hours
     ) {
+      //console.log("From profile screen: ", route.params);
       updateProfile(route.params);
     }
   }, [
-    route.params?.profileURI,
-    route.params?.id,
-    route.params?.userGroup,
-    route.params?.name,
-    route.params?.address,
-    route.params?.phone,
-    route.params?.email,
-    route.params?.password,
-    route.params?.emergencyPlan,
-    route.params?.paymentInfo,
-    route.params?.hours,
+    route.params
   ]);
 
   return (
@@ -254,6 +266,13 @@ const Profile = ({ route, navigation }) => {
           </View>
           <View>
             <Text style={styles.text}>{profileState.emergencyPlan}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="dollar-sign" size={24} color="#636363" />
+            <Text style={styles.profileText}>Payment Information</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.paymentInfo}</Text>
           </View>
         </View>
       </ScrollView>

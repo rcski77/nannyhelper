@@ -70,7 +70,7 @@ export function setupProfileListener(updateFunc) {
 
 export function updateProfile(item) {
   const db = getDatabase();
-  console.log(item);
+  //console.log("from fb helper: ", item);
   if (item.id) {
     const key = item.id;
     delete item.id;
