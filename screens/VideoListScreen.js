@@ -57,14 +57,14 @@ const VideoListScreen = ({ navigation }) => {
   //Copies JSON over to usestate variable
   const [videos, setVideos] = useState([]);
 
-  // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW
+  // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW, IF QUOTA IS MET
   // ------------------------------------------
-  // useEffect(() => {
-  //   getVideos((data) => {
-  //     console.log("recieved: ", data);
-  //     setVideos(data.items);
-  //   }, searchQuery);
-  // }, []);
+  useEffect(() => {
+    getVideos((data) => {
+      console.log("recieved: ", data);
+      setVideos(data.items);
+    }, searchQuery);
+  }, []);
   // ------------------------------------------
 
   // RenderVideo takes in two arguments and use JS destructure to
@@ -102,12 +102,12 @@ const VideoListScreen = ({ navigation }) => {
           title="Search"
           onPress={() => {
             console.log(searchQuery);
-            // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW
+            // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW, IF QUOTA IS MET
             // ------------------------------------------
-            // getVideos((data) => {
-            //   console.log("recieved: ", data);
-            //   setVideos(data.items);
-            // }, searchQuery);
+            getVideos((data) => {
+              console.log("recieved: ", data);
+              setVideos(data.items);
+            }, searchQuery);
             // ------------------------------------------
           }}
         />
