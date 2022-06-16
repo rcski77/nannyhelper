@@ -4,10 +4,12 @@ import { StyleSheet, Text, View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
 import Schedule from "./screens/Schedule";
 import ScheduleStackScreen from "./screens/Schedule";
 import ProfileStackScreen from "./screens/Profile";
+import YTVideoFeedStackScreen from "./screens/VideoListScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -46,6 +48,15 @@ export default function App() {
           options={{
             tabBarLabel: "Schedule",
             tabBarIcon: ({ color }) => <Feather name="calendar" size={24} color={color} />,
+          }}
+        />
+
+        <Tab.Screen
+          name="YTVideoFeedStackScreen"
+          component={YTVideoFeedStackScreen}
+          options={{
+            tabBarLabel: "Video Tips",
+            tabBarIcon: ({ color }) => <Entypo name="video" size={24} color={color} />,
           }}
         />
       </Tab.Navigator>

@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 fb_creds.js
+YoutubeKey.js
 
 # macOS
 .DS_Store
