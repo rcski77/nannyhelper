@@ -93,6 +93,7 @@ const VideoListScreen = ({ navigation }) => {
         value={searchQuery}
         onChangeText={(val) => {
           setSearchQuery(val);
+          console.log(searchQuery);
         }}
       />
 
@@ -100,10 +101,14 @@ const VideoListScreen = ({ navigation }) => {
         <Button
           title="Search"
           onPress={() => {
-            getVideos((data) => {
-              console.log("recieved: ", data);
-              setVideos(data.items);
-            }, searchQuery);
+            console.log(searchQuery);
+            // WARNING COMMENT OUT THIS LINE OF CODE FOR NOW
+            // ------------------------------------------
+            // getVideos((data) => {
+            //   console.log("recieved: ", data);
+            //   setVideos(data.items);
+            // }, searchQuery);
+            // ------------------------------------------
           }}
         />
       </View>
@@ -113,6 +118,7 @@ const VideoListScreen = ({ navigation }) => {
           title="Clear"
           onPress={() => {
             setSearchQuery("");
+            console.log(searchQuery);
           }}
         />
       </View>
