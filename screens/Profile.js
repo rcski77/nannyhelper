@@ -48,7 +48,7 @@ const Profile = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
     profileURI: "",
-    userID: "",
+    id: "",
     userGroup: "",
     name: "",
     address: "",
@@ -72,7 +72,7 @@ const Profile = ({ route, navigation }) => {
   useEffect(() => {
     if (
       route.params?.profileURI ||
-      route.params?.userID ||
+      route.params?.id ||
       route.params?.userGroup ||
       route.params?.name ||
       route.params?.address ||
@@ -87,7 +87,7 @@ const Profile = ({ route, navigation }) => {
     }
   }, [
     route.params?.profileURI,
-    route.params?.userID,
+    route.params?.id,
     route.params?.userGroup,
     route.params?.name,
     route.params?.address,
@@ -107,7 +107,7 @@ const Profile = ({ route, navigation }) => {
           onPress={() => {
             navigation.navigate("ProfileSettings", {
               profileURI: profileState.profileURI,
-              userID: profileState.userID,
+              id: profileState.id,
               userGroup: profileState.userGroup,
               name: profileState.name,
               address: profileState.address,
@@ -170,7 +170,7 @@ const Profile = ({ route, navigation }) => {
   useEffect(() => {
     if (
       route.params?.profileURI ||
-      route.params?.userID ||
+      route.params?.id ||
       route.params?.userGroup ||
       route.params?.name ||
       route.params?.address ||
@@ -185,7 +185,7 @@ const Profile = ({ route, navigation }) => {
     }
   }, [
     route.params?.profileURI,
-    route.params?.userID,
+    route.params?.id,
     route.params?.userGroup,
     route.params?.name,
     route.params?.address,
