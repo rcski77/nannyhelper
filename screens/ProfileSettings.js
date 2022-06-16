@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect, useCallback } from "react";
-import { Input } from "react-native-elements";
+import { Input, Divider } from "react-native-elements";
 import { RadioButton } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
@@ -222,13 +222,16 @@ const ProfileSettings = ({ route, navigation }) => {
   return (
     <ScrollView nestedScrollEnabled={true}>
       <SafeAreaView style={styles.container}>
+        <View style={{ flex: 1, alignSelf: "center"}}>
         {/* Image Component, if imageURI is exists, else placeholder*/}
         {imageURI ? (
-          <Image source={{ uri: imageURI }} style={{ width: 200, height: 200 }} />
+          <Image source={{ uri: imageURI }} style={{ width: 150, height: 150, borderRadius: 75 }} />
         ) : (
           <Text>Please Select an Profile Image...</Text>
         )}
+        </View>
 
+        <View style={{display: "flex", flexDirection: "row", justifyContent: "space-evenly"}}>
         {/* Image Picker Button */}
         <TouchableOpacity onPress={pickProfileImage}>
           <View>
@@ -256,14 +259,16 @@ const ProfileSettings = ({ route, navigation }) => {
             <Text>Confirm Profile Image</Text>
           </View>
         </TouchableOpacity>
-
+        </View>
+        <Divider orientation="horizontal" width={5} margin={5} />
         <View>
           {/* USER ID PLACE HOLDER */}
           <Text> id: {profileState.id}</Text>
 
           {/* USER GROUP RADIO BUTTON SELECTION */}
-          <View>
+          <View >
             <Text>Please Select Your User Group:</Text>
+            <View style={{display: "flex",  flexDirection: "row", justifyContent: "space-evenly"}}>
             <Text>Parents</Text>
             <RadioButton
               value="Parents"
@@ -282,6 +287,7 @@ const ProfileSettings = ({ route, navigation }) => {
                 updateProfileState({ userGroup: "Nanny" });
               }}
             />
+            </View>
           </View>
 
           {/* OTHER INPUTS */}
