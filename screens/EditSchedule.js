@@ -99,10 +99,10 @@ const EditSchedule = ({ route, navigation }) => {
   const [profileList, setProfileList] = useState([]);
 
   useEffect(() => {
-    if (scheduleObj.sitter) {
-      setProfileValue(scheduleObj.sitter);
+    if (route.params?.sitter) {
+      setProfileValue(route.params.sitter);
     }
-  }, [scheduleObj.sitter]);
+  }, [route.params?.sitter]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -140,8 +140,9 @@ const EditSchedule = ({ route, navigation }) => {
           setOpen={setProfileOpen}
           setValue={setProfileValue}
           setItems={setProfileList}
-          onSelectItem={(val) => {
-            updateScheduleObj({ sitter: val.name });
+          onSelectItem={(value) => {
+            updateScheduleObj({ sitter: value.name });
+            console.log(value.name);
           }}
           containerStyle={{ marginTop: 5 }}
         />
