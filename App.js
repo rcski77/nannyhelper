@@ -6,10 +6,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 
-import Schedule from "./screens/Schedule";
 import ScheduleStackScreen from "./screens/Schedule";
 import ProfileStackScreen from "./screens/Profile";
 import YTVideoFeedStackScreen from "./screens/VideoListScreen";
+import { navColor } from "./assets/style";
 
 import * as Analytics from "expo-firebase-analytics";
 
@@ -40,7 +40,7 @@ export default function App() {
         initialRouteName="Profile"
         screenOptions={{
           headerStyle: {
-            backgroundColor: "#3c4754",
+            backgroundColor: navColor,
           },
           headerTintColor: "#fff",
           headerTitleAlign: "center",
@@ -48,7 +48,7 @@ export default function App() {
             fontWeight: "bold",
           },
           headerShown: false,
-          tabBarActiveBackgroundColor: "#3c4754",
+          tabBarActiveBackgroundColor: navColor,
           tabBarActiveTintColor: "#fff",
           tabBarLabelStyle: { fontSize: 14 },
         }}

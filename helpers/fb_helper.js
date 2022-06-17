@@ -49,6 +49,13 @@ export function updateSchedule(item) {
   }
 }
 
+export function deleteSchedule(item) {
+  const db = getDatabase();
+  const reference = ref(db, `scheduleData/${item.id}`);
+  console.log(reference);
+  remove(reference);
+}
+
 // Methods for Profile Settings Data
 export function storeProfile(item) {
   const db = getDatabase();

@@ -2,19 +2,20 @@ import {
   Button,
   StyleSheet,
   View,
-  Text,
   FlatList,
   TouchableOpacity,
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+//import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Input, ListItem, Image } from "react-native-elements";
-import { BaseRouter } from "@react-navigation/native";
+//import { BaseRouter } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
+
 import YTViewerScreen from "./YTViewerScreen";
 import { getVideos } from "../api/YoutubeServer";
+import { navColor } from "../assets/style";
 
 const YTVideoFeedStack = createNativeStackNavigator();
 
@@ -24,14 +25,14 @@ const YTVideoFeedStackScreen = ({ route, navigation }) => {
       initialRouteName="VideoListScreen"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#3c4754",
+          backgroundColor: navColor,
         },
         headerTintColor: "#fff",
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        tabBarActiveBackgroundColor: "#3c4754",
+        tabBarActiveBackgroundColor: navColor,
         tabBarActiveTintColor: "#fff",
         tabBarLabelStyle: { fontSize: 14 },
       }}

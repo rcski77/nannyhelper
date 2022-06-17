@@ -8,6 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import ProfileSettings from "./ProfileSettings";
 import CameraScreen from "./CameraScreen";
 import { initDB, setupProfileListener, updateProfile } from "../helpers/fb_helper";
+import { navColor } from "../assets/style";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -17,14 +18,14 @@ const ProfileStackScreen = ({ route, navigation }) => {
       initialRouteName="Profile"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#3c4754",
+          backgroundColor: navColor,
         },
         headerTintColor: "#fff",
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        tabBarActiveBackgroundColor: "#3c4754",
+        tabBarActiveBackgroundColor: navColor,
         tabBarActiveTintColor: "#fff",
         tabBarLabelStyle: { fontSize: 14 },
       }}
