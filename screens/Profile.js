@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Keyboard,
-  TouchableWithoutFeedback,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, ScrollView } from "react-native";
+import { Divider, Image } from "react-native-elements";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { FlatList } from "react-native-gesture-handler";
+import DropDownPicker from "react-native-dropdown-picker";
 import { Feather } from "@expo/vector-icons";
+
 import ProfileSettings from "./ProfileSettings";
 import CameraScreen from "./CameraScreen";
-import { initDB, setupProfileListener, storeProfile, updateProfile } from "../helpers/fb_helper";
+import { initDB, setupProfileListener, updateProfile } from "../helpers/fb_helper";
+import { navColor } from "../assets/style";
 
 const ProfileStack = createNativeStackNavigator();
 
@@ -24,14 +18,14 @@ const ProfileStackScreen = ({ route, navigation }) => {
       initialRouteName="Profile"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#3c4754",
+          backgroundColor: navColor,
         },
         headerTintColor: "#fff",
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        tabBarActiveBackgroundColor: "#3c4754",
+        tabBarActiveBackgroundColor: navColor,
         tabBarActiveTintColor: "#fff",
         tabBarLabelStyle: { fontSize: 14 },
       }}
@@ -54,7 +48,8 @@ const ProfileStackScreen = ({ route, navigation }) => {
 const Profile = ({ route, navigation }) => {
   // State Hook for User Profiles
   const [profileState, setProfileState] = useState({
-    userID: "",
+    profileURI: "",
+    id: "",
     userGroup: "",
     name: "",
     address: "",
@@ -77,7 +72,8 @@ const Profile = ({ route, navigation }) => {
   // Updates profile information upon change
   useEffect(() => {
     if (
-      route.params?.userID ||
+      route.params?.profileURI ||
+      route.params?.id ||
       route.params?.userGroup ||
       route.params?.name ||
       route.params?.address ||
@@ -91,7 +87,8 @@ const Profile = ({ route, navigation }) => {
       updateProfileState(route.params);
     }
   }, [
-    route.params?.userID,
+    route.params?.profileURI,
+    route.params?.id,
     route.params?.userGroup,
     route.params?.name,
     route.params?.address,
@@ -110,7 +107,8 @@ const Profile = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             navigation.navigate("ProfileSettings", {
-              userID: profileState.userID,
+              profileURI: profileState.profileURI,
+              id: profileState.id,
               userGroup: profileState.userGroup,
               name: profileState.name,
               address: profileState.address,
@@ -126,10 +124,29 @@ const Profile = ({ route, navigation }) => {
           <Feather style={styles.navButtons} name="settings" size={24} />
         </TouchableOpacity>
       ),
+      headerLeft: () => (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ProfileSettings", {
+              profileURI: "",
+              id: "",
+              userGroup: "",
+              name: "",
+              address: "",
+              phone: "",
+              email: "",
+              password: "",
+              emergencyPlan: "",
+              paymentInfo: "",
+              hours: "",
+            });
+          }}
+        >
+          <Feather style={styles.navButtons} name="plus" size={24} />
+        </TouchableOpacity>
+      )
     });
   });
-
-  // const [profileList, setProfileList] = useState([]);
 
   //Setup Firebase
   useEffect(() => {
@@ -139,16 +156,43 @@ const Profile = ({ route, navigation }) => {
       console.log(err);
     }
 
-    // setupProfileListener((items) => {
-    //   setProfileList(items);
-    //   console.log(items);
-    // });
+    setupProfileListener((items) => {
+      setProfileList(items);
+      //console.log("List of profiles: ", items);
+    });
   }, []);
 
-  //write schedule slots passed from add screen
+  //Profile picker
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileValue, setProfileValue] = useState(null);
+  const [profileList, setProfileList] = useState([]);
+
+  const selectProfile = (profile) => {
+    updateProfileState(profile);
+  };
+
+  const renderProfilePic = (profile) => {
+    if (profile.profileURI == "") {
+      return (
+        <View>
+          <Text style={{ marginBottom: 10 }}>No profile picture set</Text>
+        </View>
+      );
+    } else {
+      return (
+        <Image
+          source={{ uri: profile.profileURI }}
+          style={{ width: 150, height: 150, borderRadius: 75 }}
+        />
+      );
+    }
+  };
+
+  //write profile state passed from add screen to fb
   useEffect(() => {
     if (
-      route.params?.userID ||
+      route.params?.profileURI ||
+      route.params?.id ||
       route.params?.userGroup ||
       route.params?.name ||
       route.params?.address ||
@@ -159,33 +203,78 @@ const Profile = ({ route, navigation }) => {
       route.params?.paymentInfo ||
       route.params?.hours
     ) {
+      //console.log("From profile screen: ", route.params);
       updateProfile(route.params);
     }
   }, [
-    route.params?.userID,
-    route.params?.userGroup,
-    route.params?.name,
-    route.params?.address,
-    route.params?.phone,
-    route.params?.email,
-    route.params?.password,
-    route.params?.emergencyPlan,
-    route.params?.paymentInfo,
-    route.params?.hours,
+    route.params
   ]);
 
   return (
     <SafeAreaView style={styles.container}>
+      <View>
+        <DropDownPicker
+          placeholder="Select profile"
+          schema={{
+            label: "name",
+            value: "id",
+          }}
+          open={profileOpen}
+          value={profileValue}
+          items={profileList}
+          setOpen={setProfileOpen}
+          setValue={setProfileValue}
+          setItems={setProfileList}
+          onSelectItem={selectProfile}
+          containerStyle={{ marginTop: 5 }}
+        />
+      </View>
+      <Divider orientation="horizontal" width={5} margin={5} />
       <ScrollView nestedScrollEnabled={true}>
+        <View style={styles.profilePic}>{renderProfilePic(profileState)}</View>
         <View>
-          <Text style={styles.text}>Profile:</Text>
-          <Text style={styles.text}>Group: {profileState.userGroup}</Text>
-          <Text style={styles.text}>Name: {profileState.name}</Text>
-          <Text style={styles.text}>Address: {profileState.address}</Text>
-          <Text style={styles.text}>Phone #: {profileState.phone}</Text>
-          <Text style={styles.text}>Email: {profileState.email}</Text>
-          <Text style={styles.text}>Emergency Plan: {profileState.emergencyPlan}</Text>
-          <Text style={styles.text}>Hours: {profileState.hours}</Text>
+          <View style={styles.nameBlock}>
+            <Text style={styles.name}>{profileState.name}</Text>
+            <Text style={styles.nameSub}>Group: {profileState.userGroup}</Text>
+            <Text style={styles.nameSub}>ProfileID: {profileState.id}</Text>
+          </View>
+          <Divider orientation="horizontal" width={5} margin={5} />
+          <Text style={styles.hours}>{profileState.hours} hours worked</Text>
+          <View style={styles.profileElement}>
+            <Feather name="compass" size={24} color="#636363" />
+            <Text style={styles.profileText}>Address</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.address}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="phone" size={24} color="#636363" />
+            <Text style={styles.profileText}>Phone #</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.phone}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="mail" size={24} color="#636363" />
+            <Text style={styles.profileText}>Email</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.email}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="alert-triangle" size={24} color="#636363" />
+            <Text style={styles.profileText}>Emergency Plan</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.emergencyPlan}</Text>
+          </View>
+          <View style={styles.profileElement}>
+            <Feather name="dollar-sign" size={24} color="#636363" />
+            <Text style={styles.profileText}>Payment Information</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>{profileState.paymentInfo}</Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -194,7 +283,7 @@ const Profile = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
   },
   navButtons: {
     color: "white",
@@ -202,6 +291,37 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 18,
+    marginLeft: 30,
+    marginBottom: 5,
+  },
+  profilePic: {
+    alignItems: "center",
+  },
+  nameBlock: {
+    alignItems: "center",
+  },
+  name: {
+    fontWeight: "bold",
+    fontSize: 24,
+  },
+  nameSub: {
+    fontSize: 12,
+  },
+  hours: {
+    fontSize: 18,
+    alignSelf: "center",
+    fontWeight: "bold",
+  },
+  profileElement: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  profileText: {
+    fontSize: 20,
+    flex: 1,
+    color: "#636363",
+    marginLeft: 5,
   },
 });
 

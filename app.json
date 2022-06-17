@@ -30,16 +30,34 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "edu.gvsu.nannyhelper",
+      "buildNumber": "1.0.0",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
+      "package": "edu.gvsu.nannyhelper",
+      "versionCode": 1,
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "config": {
+        "firebase": {
+          "apiKey": "AIzaSyCrFTuJRtAMi4i2YMI-qjp175wOdu0rSb4",
+          "authDomain": "nannyhelper-99ece.firebaseapp.com",
+          "databaseURL": "https://nannyhelper-99ece-default-rtdb.firebaseio.com",
+          "projectId": "nannyhelper-99ece",
+          "storageBucket": "nannyhelper-99ece.appspot.com",
+          "messagingSenderId": "241564135279",
+          "appId": "1:241564135279:web:7a2c745f9ad75ee0c5c29a",
+          "measurementId": "G-SBW16DHSQ4"
+        }
+      }
     }
   }
 }

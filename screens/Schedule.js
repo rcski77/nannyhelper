@@ -7,7 +7,6 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { FlatList } from "react-native-gesture-handler";
 import { Feather } from "@expo/vector-icons";
@@ -16,9 +15,9 @@ import EditSchedule from "./EditSchedule";
 import {
   initDB,
   setupScheduleListener,
-  storeScheduleSlot,
   updateSchedule,
 } from "../helpers/fb_helper";
+import { navColor } from "../assets/style";
 
 const ScheduleStack = createNativeStackNavigator();
 
@@ -28,14 +27,14 @@ const ScheduleStackScreen = ({ route, navigation }) => {
       initialRouteName="Schedule"
       screenOptions={{
         headerStyle: {
-          backgroundColor: "#3c4754",
+          backgroundColor: navColor,
         },
         headerTintColor: "#fff",
         headerTitleAlign: "center",
         headerTitleStyle: {
           fontWeight: "bold",
         },
-        tabBarActiveBackgroundColor: "#3c4754",
+        tabBarActiveBackgroundColor: navColor,
         tabBarActiveTintColor: "#fff",
         tabBarLabelStyle: { fontSize: 14 },
       }}
@@ -77,7 +76,7 @@ const Schedule = ({ route, navigation }) => {
     }
     setupScheduleListener((items) => {
       setScheduleSlots(items);
-      console.log(items);
+      //console.log(items);
     });
   }, []);
 

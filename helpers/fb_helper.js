@@ -8,6 +8,10 @@ export function initDB() {
   initializeApp(firebaseConfig);
 }
 
+export function initAnalytics(app) {
+  getAnalytics(app);
+}
+
 export function storeScheduleSlot(item) {
   const db = getDatabase();
 
@@ -45,6 +49,13 @@ export function updateSchedule(item) {
   }
 }
 
+export function deleteSchedule(item) {
+  const db = getDatabase();
+  const reference = ref(db, `scheduleData/${item.id}`);
+  console.log(reference);
+  remove(reference);
+}
+
 // Methods for Profile Settings Data
 export function storeProfile(item) {
   const db = getDatabase();
@@ -70,7 +81,7 @@ export function setupProfileListener(updateFunc) {
 
 export function updateProfile(item) {
   const db = getDatabase();
-  console.log(item);
+  //console.log("from fb helper: ", item);
   if (item.id) {
     const key = item.id;
     delete item.id;
