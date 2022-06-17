@@ -51,7 +51,8 @@ export function updateSchedule(item) {
 
 export function deleteSchedule(item) {
   const db = getDatabase();
-  const reference = ref(db, `reminderData/${item.id}`);
+  const reference = ref(db, `scheduleData/${item.id}`);
+  console.log(reference);
   remove(reference);
 }
 
