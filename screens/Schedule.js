@@ -17,7 +17,6 @@ import EditSchedule from "./EditSchedule";
 import {
   initDB,
   setupScheduleListener,
-  storeScheduleSlot,
   updateSchedule,
   deleteSchedule,
 } from "../helpers/fb_helper";
