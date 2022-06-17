@@ -12,8 +12,13 @@ import YTVideoFeedStackScreen from "./screens/VideoListScreen";
 import { navColor } from "./assets/style";
 
 import * as Analytics from "expo-firebase-analytics";
+import uuid from "react-native-uuid";
 
 const Tab = createBottomTabNavigator();
+
+//Recommended by Isaac Beasley to generate unique users. Current account register all users as one
+export const currentAppUser = uuid.v4();
+Analytics.setClientId(currentAppUser);
 
 export default function App() {
   const navigationRef = useRef();
