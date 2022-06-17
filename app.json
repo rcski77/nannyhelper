@@ -1,5 +1,6 @@
 {
   "expo": {
+    "owner": "nannyhelper-app",
     "name": "nannyhelper",
     "slug": "nannyhelper",
     "version": "1.0.0",
